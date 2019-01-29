@@ -39,6 +39,16 @@ public class Account implements Serializable{
 		this.clientId = clientId;
 		this.amount = amount;
 	}
+	
+	/**
+	 * @param clientId
+	 * @param amount
+	 */
+	public Account(Long clientId, BigDecimal amount) {
+		super();
+		this.clientId = clientId;
+		this.amount = amount;
+	}
 
 	/**
 	 * 

@@ -14,12 +14,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.ghidini</groupId>
-			 <artifactId>transfer-money-model</artifactId>
+			<artifactId>transfer-money-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ghidini</groupId>
-			 <artifactId>transfer-money-config</artifactId>
+			<artifactId>transfer-money-config</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

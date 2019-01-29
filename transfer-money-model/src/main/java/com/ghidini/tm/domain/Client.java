@@ -35,6 +35,14 @@ public class Client implements Serializable{
 	}
 	
 	/**
+	 * @param clientId
+	 * @param clientName
+	 */
+	public Client(String clientName) {
+		this.clientName = clientName;
+	}
+	
+	/**
 	 * 
 	 */
 	public Client() {}

@@ -44,7 +44,7 @@ public class AccountService implements IAccountService{
 			verifyAmount(account.getAmount()); 
 			accountDao.insert(new Account(account.getClientId(), account.getAmount()));
 		} catch(Exception e) {
-			logger.error(new DBCommitException(account));
+			logger.error(new DBCommitException());
 		}
 	}
 
@@ -83,7 +83,7 @@ public class AccountService implements IAccountService{
 			verifyAccountId(id); 
 			accountDao.delete(verifyAccount(id).getAccountId());
 		} catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(new DBCommitException());
 		}	
 	}
 
@@ -94,7 +94,7 @@ public class AccountService implements IAccountService{
 			Account verifyAccount = verifyAccount(account.getAccountId());
 			accountDao.update(verifyAccount);		
 		} catch(Exception e) {
-			logger.error(e.getMessage());
+			logger.error(new DBCommitException());
 		}
 	}
 

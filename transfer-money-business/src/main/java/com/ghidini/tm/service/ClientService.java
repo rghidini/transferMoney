@@ -38,7 +38,7 @@ public class ClientService implements IClientService{
 			verifyName(client.getClientName()); 
 			clientDao.insert(new Client(client.getClientName()));
 		} catch(Exception e) {
-			logger.error(new DBCommitException(client));
+			logger.error(new DBCommitException());
 		}
 	}
 
@@ -51,7 +51,7 @@ public class ClientService implements IClientService{
 			client = new Client(verifyClient(id).getClientId(), clientDto.getClientName());
 			clientDao.update(client).getClientName();
 		} catch(Exception e) {
-			logger.error(new DBCommitException(clientDto));
+			logger.error(new DBCommitException());
 		}
 	}
 

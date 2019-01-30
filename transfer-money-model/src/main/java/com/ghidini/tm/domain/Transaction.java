@@ -53,6 +53,20 @@ public class Transaction implements Serializable{
 		this.transactionDate = transactionDate;
 	}
 	
+	/**
+	 * @param fromAccountId
+	 * @param toAccountId
+	 * @param amount
+	 * @param transactionDate
+	 */
+	public Transaction(Long fromAccountId, Long toAccountId, BigDecimal amount,
+			LocalDateTime transactionDate) {
+		this.fromAccountId = fromAccountId;
+		this.toAccountId = toAccountId;
+		this.amount = amount;
+		this.transactionDate = transactionDate;
+	}
+	
 
 	/**
 	 * 

@@ -1,6 +1,7 @@
 package com.ghidini.tm.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 
 import com.ghidini.tm.dao.interfaces.ITransactionDAO;
+import com.ghidini.tm.domain.Transaction;
 import com.ghidini.tm.domain.dto.AccountDTO;
 import com.ghidini.tm.domain.dto.TransactionDTO;
 import com.ghidini.tm.service.interfaces.IAccountService;
@@ -64,6 +66,9 @@ public class TransactionService implements ITransactionService{
 			BigDecimal add = toAccount.getAmount().add(amount);
 			toAccount.setAmount(add);
 			accountService.updateAccount(toAccount);
+			
+			transactionDao.insert(new Transaction(transaction.getFromAccountId(), transaction.getToAccountId(), 
+					transaction.getAmount(), LocalDateTime.now()));
 
 		} catch(Exception e) {
 			logger.error(e.getMessage());

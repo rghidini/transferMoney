@@ -45,7 +45,6 @@ public class Account implements Serializable{
 	 * @param amount
 	 */
 	public Account(Long clientId, BigDecimal amount) {
-		super();
 		this.clientId = clientId;
 		this.amount = amount;
 	}

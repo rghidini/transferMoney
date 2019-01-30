@@ -24,7 +24,7 @@ import com.ghidini.tm.service.interfaces.IClientService;
 public class ClientService implements IClientService{
 
 	private static final Logger logger = Logger.getLogger(ClientService.class);
-	
+
 	private static final String CLIENT_NOT_FOUND = "Client not found";
 	private static final String ID_MUST_BE_A_NUMBER = "Client id can't be null and must be a positive number";
 	private static final String NAME_CANT_BE_NULL = "Client name can't be null and can't be contains a numeric character";
@@ -35,12 +35,8 @@ public class ClientService implements IClientService{
 	@Override
 	public void addClient(ClientDTO client) {
 		try {
-			if(StringUtils.isBlank(client.getClientName())
-					|| StringUtils.isAlphanumeric(client.getClientName())){
-				throw new IllegalArgumentException(NAME_CANT_BE_NULL);
-			} else {
-				clientDao.insert(new Client(client.getClientName()));
-			}
+			verifyName(client.getClientName()); 
+			clientDao.insert(new Client(client.getClientName()));
 		} catch(Exception e) {
 			logger.error(new DBCommitException(client));
 		}
@@ -50,19 +46,10 @@ public class ClientService implements IClientService{
 	public void updateClient(Long id, ClientDTO clientDto) {
 		Client client = null;
 		try {
-			if(StringUtils.isBlank(clientDto.getClientName())
-					|| StringUtils.isAlphanumeric(clientDto.getClientName())){
-				throw new IllegalArgumentException(NAME_CANT_BE_NULL);
-			} else if(Objects.isNull(id)
-					|| !NumberUtils.isNumber(id.toString())
-					|| Objects.equals(Long.signum(id), NumberUtils.INTEGER_MINUS_ONE)) {
-				throw new IllegalArgumentException(ID_MUST_BE_A_NUMBER);
-			} else {
-				client = new Client(id, Optional.ofNullable(clientDao.findById(id))
-						.orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND))
-						.getClientName());
-				clientDao.update(client).getClientName();
-			}
+			verifyName(clientDto.getClientName());
+			verifyId(id); 
+			client = new Client(verifyClient(id).getClientId(), clientDto.getClientName());
+			clientDao.update(client).getClientName();
 		} catch(Exception e) {
 			logger.error(new DBCommitException(clientDto));
 		}
@@ -72,15 +59,8 @@ public class ClientService implements IClientService{
 	public ClientDTO findClientById(Long id) {
 		ClientDTO clientDto = null;
 		try {
-			if(Objects.isNull(id)
-					|| !NumberUtils.isNumber(id.toString())
-					|| Objects.equals(Long.signum(id), NumberUtils.INTEGER_MINUS_ONE)){
-				throw new IllegalArgumentException(ID_MUST_BE_A_NUMBER);
-			} else {
-				clientDto = new ClientDTO(Optional.ofNullable(clientDao.findById(id))
-						.orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND))
-						.getClientName());
-			}
+			verifyId(id); 
+			clientDto = new ClientDTO(verifyClient(id).getClientName());
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -105,18 +85,31 @@ public class ClientService implements IClientService{
 	@Override
 	public void deleteClient(Long id) {
 		try {
-			if(Objects.isNull(id)
-					|| !NumberUtils.isNumber(id.toString())
-					|| Objects.equals(Long.signum(id), NumberUtils.INTEGER_MINUS_ONE)){
-				throw new IllegalArgumentException(ID_MUST_BE_A_NUMBER);
-			} else {
-				clientDao.delete(Optional.ofNullable(clientDao.findById(id))
-						.orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND))
-						.getClientId());
-			}
+			verifyId(id); 
+			clientDao.delete(verifyClient(id).getClientId());
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 		}
+	}
+	
+	private void verifyName(String name) {
+		if(StringUtils.isBlank(name)
+				|| !StringUtils.isAlpha(name)){
+			throw new IllegalArgumentException(NAME_CANT_BE_NULL);
+		}
+	}
+	
+	private void verifyId(Long id) {
+		if(Objects.isNull(id)
+				|| !NumberUtils.isNumber(id.toString())
+				|| Objects.equals(Long.signum(id), NumberUtils.INTEGER_MINUS_ONE)) {
+			throw new IllegalArgumentException(ID_MUST_BE_A_NUMBER);
+		}
+	}
+	
+	private Client verifyClient(Long id) {
+		return Optional.ofNullable(clientDao.findById(id))
+				.orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
 	}
 
 }

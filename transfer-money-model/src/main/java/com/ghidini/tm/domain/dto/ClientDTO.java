@@ -8,17 +8,27 @@ public class ClientDTO implements Serializable{
 	
 	private String clientName;
 	
-
+	/**
+	 * @param clientName
+	 */
 	public ClientDTO(String clientName) {
 		this.clientName = clientName;
 	}
 
+	/**
+	 * @return the clientName
+	 */
 	public String getClientName() {
 		return clientName;
 	}
 
+	/**
+	 * @param clientName the clientName to set
+	 */
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
+
+
 
 }
